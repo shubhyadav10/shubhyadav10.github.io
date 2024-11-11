@@ -47,6 +47,15 @@ def generate_html_homepage():
 </head>
 <body>
     <a href = "#main">Skip to Main Content</a>
+    <nav>
+     <ul>
+        <li><a href="../index.html">Home Page</a></li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#team-results">Team Results</a></li>
+        <li><a href="#individual-results">Individual Results</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+     </ul>
+   </nav>
     <header id="hdr" > 
     <!-- FAB Button with SVG Search Icon -->
     <button class="fab">
@@ -69,19 +78,30 @@ def generate_html_homepage():
 
 """
 
-    html_template += '''<script>
-        // JavaScript for toggle functionality with optional local storage
+    html_template += ''' <script>
         document.addEventListener('DOMContentLoaded', () => {
             const savedMode = localStorage.getItem('mode');
             const body = document.body;
             const toggleButton = document.getElementById('mode-toggle');
     
-            if (savedMode === 'dark-mode') {
-                body.classList.add('dark-mode');
-                toggleButton.textContent = 'Switch to Light Mode';
+            // Check for saved preference in localStorage
+            if (savedMode) {
+                if (savedMode === 'dark-mode') {
+                    body.classList.add('dark-mode');
+                    toggleButton.textContent = 'Switch to Light Mode';
+                } else {
+                    body.classList.add('light-mode');
+                    toggleButton.textContent = 'Switch to Dark Mode';
+                }
             } else {
-                body.classList.add('light-mode');
-                toggleButton.textContent = 'Switch to Dark Mode';
+                // Use system preference if no saved preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    body.classList.add('dark-mode');
+                    toggleButton.textContent = 'Switch to Light Mode';
+                } else {
+                    body.classList.add('light-mode');
+                    toggleButton.textContent = 'Switch to Dark Mode';
+                }
             }
         });
     

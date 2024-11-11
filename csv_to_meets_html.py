@@ -31,13 +31,15 @@ def csv_to_html(csv_filename, output_folder):
 <title>{link_text}</title>
 <link rel="stylesheet" href="../css/reset.css">
 <link rel="stylesheet" href="../css/style.css">
+<link href="../dist/css/lightbox.css" rel="stylesheet" />
+
 </head>
    <body>
    <a href = "#main">Skip to Main Content</a>
 
    <nav>
      <ul>
-        <li><a href="index.html">Home Page</a></li>
+        <li><a href="../index.html">Home Page</a></li>
         <li><a href="#summary">Summary</a></li>
         <li><a href="#team-results">Team Results</a></li>
         <li><a href="#individual-results">Individual Results</a></li>
@@ -79,25 +81,48 @@ def csv_to_html(csv_filename, output_folder):
                     html_content += f"<tr><td>{row[0]}</td><td>{row[1]}</td><td> {row[2]}</td></tr>\n"
 
             # For rows that are 8 columns wide and contain 'Ann Arbor Skyline' in column 6
+            # elif len(row) == 8 and row[5].strip().lower() == 'ann arbor skyline':
+            #     if table_start == True:
+            #         table_start = False
+            #         html_content += "</table>\n"
+            #         html_content += """</section>\n
+            #         <section id="individual-results">\n
+            #         <h2>Individual Results</h2>"""
+
+            #     place = row[0]
+            #     grade = row[1]
+            #     name = row[2]
+            #     time = row[4]
+            #     profile_pic = row[7]
             elif len(row) == 8 and row[5].strip().lower() == 'ann arbor skyline':
-                if table_start == True:
+                if table_start:
                     table_start = False
                     html_content += "</table>\n"
                     html_content += """</section>\n
-                    <section id="individual-results">\n
-                    <h2>Individual Results</h2>"""
-
+                        <section id="individual-results">\n
+                        <h2>Individual Results</h2>"""
+        
                 place = row[0]
                 grade = row[1]
                 name = row[2]
                 time = row[4]
                 profile_pic = row[7]
+                
+# Close the collapsible content and section
+                
 
                 # Add the athlete div
                 html_content += f"""
 <div class="athlete">
 <figure> 
+
+<a href="../images/profiles/{profile_pic}" target ="_blank" data-lightbox="gallery" data-title="{name}" data-alt="Athlete Running">
+
+
+
+
     <img src="../images/profiles/{profile_pic}" width="200" alt="Profile picture of {name}"> 
+</a>
     <figcaption>{name}</figcaption>
 </figure>
 <dl>
@@ -165,6 +190,10 @@ def csv_to_html(csv_filename, output_folder):
             }
         }
     </script>
+    <script src="../js/imagePlaceholder.js"></script>
+    <script src="../dist/js/lightbox-plus-jquery.js"></script> <!-- Lightbox with jQuery included -->
+
+    
         </body>
 </html>
 """
